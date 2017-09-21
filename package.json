@@ -1,0 +1,23 @@
+{
+  "name": "COSMOS",
+  "version": "0.0.1",
+  "description": "многопользовательская песочница",
+  "main": "ws_server.js",
+  "scripts": {
+    "start": "node ws_server.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.1",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.15.4",
+    "ws": "^3.2.0"
+  },
+  "engines": {
+    "node": "8.x"
+  },
+  "repository": {
+    "url": ""
+  },
+  "license": "",
+  "keywords": []
+}
