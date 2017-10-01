@@ -42,10 +42,10 @@ let _user_pos = {cx:0,cy:0,x:0,y:0}
 
 // create reusable transporter object using the default SMTP transport
 let transporter = nodemailer.createTransport({
-    service: 'Mail.ru',
+    service: '',
     auth: {
-        user: 'robotcity@mail.ru',
-        pass: 'xdrtfc'
+        user: '',
+        pass: ''
     }
 });
 
