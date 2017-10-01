@@ -1,0 +1,417 @@
+.station {
+    display     : none;
+    font-family : monospace;
+    z-index     : 100;
+    background  : rgb(0, 0, 0);
+    position    : absolute;
+    left        : calc(50% - 400px);
+    top         : calc(50% - 300px);
+    width       : 800px;
+    height      : 600px;
+    color       : gray;
+}
+
+.st_stat{
+    width:800px;
+    height:20px;
+    background-color: #0c0c0c;
+}
+.st_menu{
+    width:800px;
+    height:60px;
+}
+
+.st_razdels{
+    width:800px;
+    height:500px;
+}
+.st_btn {
+    cursor:default;
+    width: 130px;
+    height:30px;
+    display: inline-block;
+    text-align: center;
+    line-height:35px;
+    font-size:18px;
+    margin:0 0px 0px 0;
+    border: 1px solid #232323;
+}
+.st_btn:hover {
+    background-color: #232323;
+}
+.st_btn_sel {
+    background-color: #232323;
+}
+
+/*
+    статус бар
+*/
+.st_stat_cr{
+    width: 150px;display:inline-block;
+}
+.st_stat_name{
+    width: 400px;display:inline-block;text-align: center;
+}
+.st_stat_date{
+    width: 150px;display:inline-block;text-align: right;
+}
+
+/*
+    Ангар
+*/
+.st_angar_ship{
+    cursor:pointer;
+    height:30px;
+}
+
+.st_angar_ship span{
+    transition-duration:0.25s;
+    font-size:16px;
+    color:#8a8243;
+    margin: 0px 0 0px 15px;
+    line-height:25px;
+}
+
+.st_angar_ship_selected span{
+    margin: 0px 0 0 20px;
+    color:#e9f974; 
+}
+
+
+.st_angars {
+    width:100%;
+    height:500px;
+    overflow:auto;
+}
+.st_angar_gun{
+    float:left;
+    width:250px;
+    height:200px;
+    border: 1px solid #252525;
+    border-radius: 5px;
+    margin: 10px;
+}
+
+.st_angar_gun .title{
+    margin: 5px 0 10px 0;
+    text-align: center;
+    font-size: 16px;
+    color: #56af51;
+}
+.st_angar_gun .prop{
+    margin: 0 0 10px 10px;
+}
+.st_angar_gun input{
+    background-color: black;
+    border: 1px solid gray;
+    border-radius: 5px;
+    width: 60px;
+    color: gray;
+    padding: 5px;
+}
+/*
+    Корабли
+*/
+.st_ships_menu {
+    float:left;
+    display:block;
+    width:139px;
+    height: 500px;
+    border-right: 1px solid #1b1a1a;
+}
+
+.st_ships_menu1 {
+    padding-top:10px;
+    height:100px;
+}
+
+.st_ships_menu2 {
+    border-top:1px dashed #444444;
+    padding-top:20px;
+}
+
+
+.st_r_btn { 
+    cursor:pointer;
+    height:30px;
+    transition-duration:0.25s;
+}
+.st_r_btn span{ 
+    font-size:16px;
+    color:gray;
+    margin: 0px 0 0px 15px;
+    transition-duration:0.25s;
+    line-height:25px;
+}
+.st_r_btn:hover { 
+    background-color: #ffffff;
+}
+.st_r_btn:hover span{ 
+    margin: 0px 0 0 20px;
+    color:#000000; 
+}
+
+.st_r_btn_sel span{ margin: 0px 0 0px 25px !important;color:#ffffff;}
+.st_r_btn_sel:hover span{ color:#000000;}
+
+.st_razdel{
+    float:left;
+    width: 600px;
+    height: 500px;
+}
+
+.st_ships {
+    width:100%;
+    height:400px;
+    overflow:auto;
+}
+
+.st_ship_info{
+    border-top: 1px solid #1b1a1a;
+}
+
+.st_ship_info_text{
+    font-size: 16px;
+    margin: 5px;
+    color: #949431;
+    height: 50px;
+    float: left;
+    width: 420px;
+    overflow: auto;
+}
+
+/*============================
+/ Шаблон карточки корабля
+*/
+.st_ship_card { 
+    cursor: pointer;
+    display:block;
+    width : 588px; 
+    height: 70px;
+    border: 1px solid rgb(0, 47, 25);
+    margin: 10px 0 0 10px;
+    border-radius: 4px;
+    transition-duration: 0.25s;
+}
+.st_ship_card_name { 
+    display:inline-block;
+    margin: 5px 0 10px 30px;
+    font-size: 18px;
+    width: 400px;
+    color: white;
+}
+.st_ship_card_money { 
+    display:inline-block;
+    text-align: right;
+    width: 140px;
+    color: green;
+    font-size: 18px;
+}
+.st_ship_card:hover { 
+    border: 1px solid rgb(255, 47, 25);
+}
+.st_ship_card_sel {
+    border: 1px solid rgb(255, 47, 25);
+    background-color : rgb(50, 0, 0);
+} 
+
+/*============================
+/ BTN
+*/
+.btn { 
+    width: 150px;
+    height: 35px;
+    text-align: center;
+    line-height: 34px;
+    font-size: 18px;
+    position: relative;
+    background-color: #0c0c0c;
+    border: 1px solid #181a21;
+    cursor: default;
+    margin: 5px;
+    font-weight: bold;
+    color:#1d1d1d;
+}
+
+
+.btn_wait {
+    background: linear-gradient(90deg, #000000, #3a3a3a, #000000);
+    background-size: 400% 400%;
+
+    animation: AnimationName 2s ease infinite;
+}
+@keyframes AnimationName { 
+    0%{background-position:0% 50%}
+    50%{background-position:100% 50%}
+    100%{background-position:0% 50%}
+}
+
+.btn_hover{
+    color: #757328;
+}
+
+.btn span{
+    display:block;
+}
+
+.btn_hover:hover span{
+    color:#b3b3b3
+}
+
+.btn_hover:active span{
+    margin:1px 0 0 2px;
+}
+
+.btn div{
+    position: absolute;
+    width: 10px;
+    height: 5px;
+    transition-duration:0.25s;
+    border: 1px solid rgba(0, 0, 0, 0);
+}
+
+.btn div:nth-child(1){
+    left: 20px;
+    top: 5px;
+}
+.btn div:nth-child(2){
+    right: 20px;
+    top: 5px;
+}
+.btn div:nth-child(3){
+    left: 20px;
+    bottom: 5px;
+}
+.btn div:nth-child(4){
+    right: 20px;
+    bottom: 5px;
+}
+
+.btn_hover:hover div:nth-child(1){
+    left: -2px;
+    top: -2px;
+    border-left: 1px solid #00a705;
+    border-top: 1px solid #00a705;
+}
+.btn_hover:hover div:nth-child(2){
+    right: -2px;
+    top: -2px;
+    border-right: 1px solid #00a705;
+    border-top: 1px solid #00a705;
+}
+.btn_hover:hover div:nth-child(3){
+    left: -2px;
+    bottom: -2px;
+    border-left: 1px solid #00a705;
+    border-bottom: 1px solid #00a705;
+}
+.btn_hover:hover div:nth-child(4){
+    right: -2px;
+    bottom: -2px;
+    border-right: 1px solid #00a705;
+    border-bottom: 1px solid #00a705;
+}
+
+/*============================
+/ Рынок
+*/
+.st_market_list{
+
+}
+
+.st_market_row_0 {
+    clear:both;
+    width: 600px;
+    height: 30px;
+    background-color: #000000;
+}
+.st_market_row_1 {
+    clear:both;
+    width: 600px;
+    height: 30px;
+    background-color: #060606;
+}
+
+.st_market_row_buy{
+    width:300px;
+    height:30px;
+    line-height: 30px;
+    font-size: 16px;    
+    border-bottom: 1px dashed #131212;
+    cursor:default;
+    float:left;
+}
+
+.st_market_row_buy:hover{
+    background: linear-gradient(135deg, #250505, #730606,#250505);
+    background-size: 200% 100%;
+    animation: market_row_anim 3s linear infinite;
+}
+
+.st_market_row_op{
+    width:100px;
+    height:30px;
+    line-height: 30px;
+    font-size: 16px;    
+    border-bottom: 1px dashed #131212;
+    cursor:default;
+    float:left;
+}
+.st_market_row_op:hover{
+    background: linear-gradient(135deg, #250505, #060673,#250505);
+    background-size: 200% 100%;
+    animation: market_row_anim 3s linear infinite;
+}
+
+
+.st_market_row_sell{
+    width:200px;
+    height:30px;
+    line-height: 30px;
+    font-size: 16px;    
+    border-bottom: 1px dashed #131212;
+    cursor:default;
+    float:left;
+}
+
+.st_market_row_sell:hover{
+    background: linear-gradient(135deg, #250505, #067306,#250505);
+    background-size: 200% 100%;
+    animation: market_row_anim 3s linear infinite;
+}
+
+
+.st_m_name{
+    width:190px;
+    float:left;
+    margin: 0 0 0 10px
+}
+.st_m_price{
+    width:100px;
+    float:left;
+    height:30px;
+    text-align: right;
+}
+.st_m_price_0{
+    width:100px;
+    float:left;
+    height:30px;
+    text-align: right;
+    color:red;
+}
+.st_m_price_1{
+    width:100px;
+    float:left;
+    height:30px;
+    text-align: right;
+    color:green;
+}
+
+@keyframes market_row_anim { 
+    0%{background-position:0% 50%}
+    100%{background-position:-200% 50%}
+}
+
+.st_market_info{
+    clear:both;
+}

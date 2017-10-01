@@ -1,0 +1,85 @@
+        
+            <div style="font-size: 24px;color: white;height: 40px;text-align:center;">
+	           <div class="rmenu1" onclick="gui_show_ship_razdel(0);">=</div>
+	           <div class="rmenu1" onclick="gui_show_ship_razdel(1);">=</div>
+	           <div class="rmenu1" onclick="gui_show_ship_razdel(2);">Карта</div>
+               <div class="rmenu2" onclick="gui_close_ship_menu();">x</div>
+            </div>
+            <div id="SHIP_MENU_STATS" style="display:none;height: 560px;color: white;">
+                <div style="font-size:22px;margin:10px;"><span id="ship_menu_main_name"></span> <span id="ship_menu_main_class"></span><br>
+                    экипаж: <span id="ship_menu_main_crew"></span>
+                    , срок эксплуатации: <span id="ship_menu_main_time"></span>, Грузовой отсек: <span>10/30</span>
+                </div>
+                <table style="font-size:18px;margin-left:50px;"><tbody><tr><td style="width:500px;">
+                    <table>  
+                        <tbody>
+                        <tr>
+                            <td style="text-align:right;">Щиты:</td>
+                            <td id="ship_menu_shield_name">класс 1</td>
+                            <td id="ship_menu_shield_dmg">износ: 15%</td>
+                            <td style="width:50px;"></td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:right;">Броня:</td>
+                            <td id="ship_menu_armor_name">класс 1</td>
+                            <td id="ship_menu_armor_dmg">износ: 15%</td>
+                            <td></td>
+                        </tr>
+                        <tr><td style="text-align:right;">Топливо:</td><td>
+                            <div style="width:100%;height:10px;background-color:#7d0202;min-width:200px;">
+                                <div id="ship_menu_fuel_bar" style="height:10px;width:0%;background-color:green;"></div>
+                            </div>
+                            </td>
+                            <td id="ship_menu_fuel_perc"></td>
+                            <td></td>
+                        </tr>
+            	        </tbody>
+            	    </table>
+                </td><td>
+
+
+                </td></tr></tbody>
+                </table>
+
+ 	            <table style="width:100%;">
+                        <tbody>
+                        <tr><td>статус в системе</td><td>система 1</td><td>нейтрал</td><td>система 2</td><td>нейтрал</td></tr>
+                        <tr><td></td><td>система 3</td><td>нейтрал</td><td>система 4</td><td>нейтрал</td></tr>
+ 	            </table>
+
+
+               <table style="width:100%;">
+               <tbody><tr><td>
+                    Оружие
+               </td><td>
+                    Двигатели
+               </td><td>
+                    Доп.
+               </td><td>
+               </td></tr></tbody></table>
+
+            </div>            
+            <div id="SHIP_MENU_CARGO" style="display:none;height: 460px;color: white;">
+                <div style="width: 600px;height:70px;"></div>
+                <div style="font-family: monospace;font-size: 12px;">
+                    <div id="ship_menu_cargo_list1" style="width: 300px;height: 385px;float:left;overflow-x: hidden;overflow-y: auto;"></div>
+     	            <div id="ship_menu_cargo_list2" style="width: 300px;height: 385px;float:left;overflow-x: hidden;overflow-y: auto;"></div>
+                </div>
+                <div style="width: 600px;height:70px;">
+                    <button onclick="gui_items_send();">Оформить трансфер</button>
+                </div>                
+            </div>
+            <div id="SHIP_MENU_MAP" style="display:none;height: 560px;color: white;">
+                <button onclick="mm_zoom(-150000);">+</button>
+	            <button onclick="mm_zoom(150000);">-</button>
+	            <div style="width:950px;">
+       	            <div style="position:relative;float:left;">
+                        <canvas id="mm_holst" width="640" height="512"></canvas>
+                        <img id="mm_sel" src="/i/sel2.png" style="position:absolute;left:0px;top:0px;transition-duration: 0.5s;">
+	                </div>
+       	            <div id="mm_planet_info" style="float:left;width:300px;">
+	                </div>
+                </div>
+            </div>
+        </div>
+

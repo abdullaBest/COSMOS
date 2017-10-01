@@ -1,4 +1,8 @@
 "use strict"
+/*
+    
+    copyright 2017 Hamzin Abdulla (abdulla_best@mail.ru)
+*/
 
 console.log('Process versions: ',process.versions);
 
@@ -38,11 +42,11 @@ let rawBodySaver = function (req, res, buf, encoding) {
   }
 }
 function prepare_server(){
-    let privateKey  = fs.readFileSync('private.key', 'utf8');
-    let certificate = fs.readFileSync('certificate.crt', 'utf8');
-    let credentials = {key: privateKey, cert: certificate};
+    //let privateKey  = fs.readFileSync('private.key', 'utf8');
+    //let certificate = fs.readFileSync('certificate.crt', 'utf8');
+    //let credentials = {key: privateKey, cert: certificate};
     SERVER = express();
-    let httpsServer = https.createServer(credentials, SERVER);
+    //let httpsServer = https.createServer(credentials, SERVER);
     //
     let bodyParser = require('body-parser');
     SERVER.use(bodyParser.json({ verify: rawBodySaver }));
@@ -56,16 +60,16 @@ function prepare_server(){
     //
     SERVER.use(express.static(__dirname + '/public'));
     //
-    httpsServer.listen(443);
+    //httpsServer.listen(443);
     let app = SERVER.listen(80);
 
     // WSS
-    WSS = new WebSocketServer({
-        //port: 3000,
-        perMessageDeflate:false,
-        server: httpsServer
-    }); //path: '/d',
-    WSS.on('connection', function(ws) { ws.onmessage = user_message; });
+    //WSS = new WebSocketServer({
+    //    //port: 3000,
+    //    perMessageDeflate:false,
+    //    server: httpsServer
+    //}); //path: '/d',
+    //WSS.on('connection', function(ws) { ws.onmessage = user_message; });
 
     // WS
     WS = new WebSocketServer({
@@ -215,8 +219,21 @@ SERVER.post('/map', function(req, res){
     res.send('');
 });
 //================================================================
-// отправляем игроку по сокету данные
-function _send(user,message){
+// отправляем игроку по сокету бинарные данные
+function _send_bin(user,message){
+    if (user.socket===null){return;}
+    if (user.socket.readyState===1){
+        try{
+            user.socket.send(message);
+        }catch(e){
+            console.log(message);
+        }
+    }else{
+        user_manager.disconnect_user(user);
+    }
+}
+// отправляем игроку по сокету строку
+function _send_str(user,message){
     if (user.socket===null){return;}
     if (user.socket.readyState===1){
         try{
@@ -292,7 +309,7 @@ function user_message(message){
     } else { // пришли бинарные данные
         let d   = new DataView(message.data.buffer,message.data.byteOffset);
         let buff_length = message.data.byteLength;
-        if (buff_length<5){ return; }
+        if (buff_length<5 || buff_length>256){ return; }
         let n   = d.getUint16(0); //
         let tip = d.getUint8(2);  //
         let u   = user_manager.get_user_by_n(n);
@@ -301,7 +318,7 @@ function user_message(message){
             let unit;
             switch(tip){
                 case INFO.MSG_UNIT_POS      : // игрок прислал обновление
-                                             if (u.tick!==primary_tick && buff_length>=25 ){
+                                             if (u.tick!==primary_tick && buff_length>=25){
                                                 if (u.unit_id!==0) {
                                                     if (u.unit_destroyed){
                                                         map_manager.remove_unit(u.unit_id);
@@ -336,19 +353,19 @@ function user_message(message){
                                                     let count = d.getUint8(l);
                                                     l = l + 1;
                                                     // считываем попадания по динамичным объектам
-                                                    while (l<buff_length-3 && count!==0){
-                                                        let gun_n   = d.getUint8( l+0);
+                                                    while (l<=buff_length-4 && count!==0){
+                                                        let damage  = d.getUint16(l+0);
                                                         let unit_id = d.getUint16(l+1);
                                                         // попали в динамический объект надо что то сделать с ним
-                                                        l = l + 3;
+                                                        l = l + 4;
                                                         count = count - 1;
                                                     }
                                                     // считываем попадания по статичным объектам
-                                                    while (l<buff_length-5){
-                                                        let gun_n     = d.getUint8( l+0);
-                                                        let static_id = d.getUint32(l+1);
-                                                        static_manager.hit_static(static_id,100);
-                                                        l = l + 5;
+                                                    while (l<=buff_length-6){
+                                                        let damage    = d.getUint16(l+0);
+                                                        let static_id = d.getUint32(l+1);                                                        
+                                                        static_manager.damage(static_id,damage);
+                                                        l = l + 6;
                                                     }
                                                 }
 
@@ -359,6 +376,13 @@ function user_message(message){
                                                 //u.last_update = Date.now();
                                              }
                                              break;
+                case INFO.MSG_DEVICE        : // задействовано устройство
+                                            if (u.unit_id!==0 && buff_length===8 && !u.unit_destroyed) {
+                                                let device_n  = d.getUint8( 3);
+                                                u.collect_req = d.getUint32( 4);
+                                                user_manager.add_action(u,INFO.ACTION_UNIT_COLLECT);
+                                            }                                                
+                                            break;
                 case INFO.MSG_BLOCK         : // игрок запросил блок с карты
                                             if ( buff_length===5 ){
                                                 let сx      = d.getUint8( 3);
@@ -376,113 +400,18 @@ function user_message(message){
                                                 user_manager.add_action(u,INFO.ACTION_UNIT_INFO_REQ);
                                             }
                                             break;
-                case INFO.MSG_ITEMS         : // игрок работает с предметами, переносит их из корабля в хранилище
-                                            if ( buff_length>=7){ // 3456
-                                                let static_id  = d.getUint32( 3);
-                                                let static_obj = static_manager.get(static_id);
-                                                let r = {
-                                                    i    : INFO.MSG_ITEMS,
-                                                    s_id : static_id,
-                                                    u_id : 0,
-                                                    u    : null,
-                                                    s    : null,
-                                                }
-                                                //
-                                                if (static_obj.id!==0){
-                                                    let c = Math.trunc((buff_length-5)/6);
-                                                    if (c>0){
-                                                        let p = 7;
-                                                        let bad = false;
-                                                        let owner1 = u.storage;
-                                                        let owner2 = static_obj.items_group;
-                                                        let count1 = 0;
-                                                        let count2 = 0;
-                                                        //
-                                                        let cc = c;
-                                                        while(c--){
-                                                            let id       = d.getUint16(p);
-                                                            p = p + 2;
-                                                            let count    = d.getUint16(p);
-                                                            p = p + 2;
-                                                            let stack_id = d.getUint16(p);
-                                                            p = p + 2;
-                                                            //
-                                                            let item = item_manager.get_item(id);
-                                                            if (count>item.count){ bad = true; }
-                                                            switch(item.owner){
-                                                                case owner1 :
-                                                                            count1 = count1 + count;
-                                                                            break;
-                                                                case owner2 :
-                                                                            count2 = count2 + count;
-                                                                            break;
-                                                                default     : bad = true;
-                                                                            break;
-                                                            }
-                                                            if (stack_id!==0){
-                                                                let stack_item = item_manager.get_item(stack_id);
-                                                                if (stack_item.owner!==owner1 && stack_item.owner!==owner2){ bad = true; }
-                                                            }
-                                                        }
-                                                        //
-                                                        // TODO сделать это правильно
-                                                        if (count1>100){ bad=true; }
-                                                        if (count2>100){ bad=true; }
-                                                        //
-                                                        if (!bad){
-                                                            c = cc;
-                                                            p = 5;
-                                                            while(c--){
-                                                                let id       = d.getUint16(p);
-                                                                p = p + 2;
-                                                                let count    = d.getUint16(p);
-                                                                p = p + 2;
-                                                                let stack_id = d.getUint16(p);
-                                                                p = p + 2;
-                                                                //
-                                                                let item = item_manager.get_item(id);
-                                                                switch(item.owner){
-                                                                    case owner1 : // предмет принадлежит игроку, он переносит его в хранилище
-                                                                                if (static_obj.items_group===0){
-                                                                                    static_obj.items_group = item_manager.add_group(0);
-                                                                                }
-                                                                                item_manager.transfer(item,static_obj.items_group,count,stack_id);
-                                                                                let user_group = item_manager.get_group(u.storage);
-                                                                                if (user_group.count===0){
-                                                                                    u.storage = 0;
-                                                                                }
-                                                                                break;
-                                                                    case owner2 : // игрок переносит предмет из хранилища
-                                                                                if (u.storage===0){
-                                                                                    u.storage = item_manager.add_group(0);
-                                                                                }
-                                                                                item_manager.transfer(item,u.storage,count,stack_id);
-                                                                                let static_group = item_manager.get_group(static_obj.items_group);
-                                                                                if (static_group.count===0){
-                                                                                    static_obj.items_group = 0;
-                                                                                }
-                                                                                break;
-                                                                }
-                                                            }
-                                                            //
-                                                            static_manager.save_static(static_obj.id);
-                                                            //
-                                                            r.u = item_manager.get_items(u.storage);
-                                                        }
-                                                    }
-                                                    r.s = item_manager.get_items(static_obj.items_group);
-                                                }
-                                                //
-                                                r.u_id = u.storage;
-                                                _send(u,JSON.stringify(r));
+                case INFO.MSG_STATIC        : // игрок работает со статикой на карте, с предметами в хранилище
+                                            if ( buff_length>=8){
+                                                let info = static_manager.user_req(u,d,buff_length);
+                                                _send_str(u,JSON.stringify(info));
                                             }
                                             break;
-                case INFO.MSG_STATION       : // 
+                case INFO.MSG_STATION       : // операции на станции 
                                             //01 2 3 4 5 6 7
                                             //if ( buff_length>=8){
                                             {
                                                 let info = station_manager.user_req(u,d,buff_length);
-                                                _send(u,JSON.stringify(info));
+                                                _send_str(u,JSON.stringify(info));
                                             }
                                             break;
             }
@@ -524,10 +453,9 @@ function main_loop(){
                     let cl = m.u_vis;
                     while (cl!=null){
                         let next = cl.next; // переходим здесь, потому что ниже могут линк оборвать
-                        _send(cl.user,m._upd);
+                        _send_str(cl.user,m._upd);
                         cl = next;
                     }
-                    m._upd = '';
                 }
                 let mm = m;
                 m = m.vis_next; // переходим на следующий сектор карты
@@ -542,12 +470,12 @@ function main_loop(){
                         let user = cl.user;
                         let next = cl.next; // переходим здесь, потому что ниже могут линк оборвать
                         if (user.tick!==tick){  // проверяем получил ли игрок оповещение по новому кадру
-                            _send(user,_send_status);
+                            _send_bin(user,_send_status);
                             user.tick = tick;
                         }
                         // отправляем обновления чанка
-                        if (m._upd.length!==0){ _send(user,m._upd); }
-                        _send(user,data);
+                        if (m._upd.length!==0){ _send_str(user,m._upd); }
+                        _send_bin(user,data);
                         cl = next;
                     }
                     //----------------------------------------------------------------------------------

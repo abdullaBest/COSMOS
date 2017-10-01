@@ -1,0 +1,64 @@
+.stat {
+    display:none;
+    z-index:100;
+    position:absolute;
+    left:calc(50% - 300px);
+    bottom:0;
+    width:600px;
+    height:50px;
+    color:#848484;
+    font-size:10px;
+    font-family:monospace;
+}
+
+.stat_ship_info{
+    width:200px;
+    height:15px;
+    position:absolute;
+    bottom:30px;
+    font-size:12px;
+    background-color: black;
+}
+
+.stat_ship_shield{
+    width:200px;
+    height:10px;
+    position:absolute;
+    bottom:20px;
+}
+
+.stat_ship_hp{
+    width:200px;
+    height:10px;
+    position:absolute;
+    bottom:10px;
+}
+
+.stat_ship_energy{
+    width:200px;
+    height:10px;
+    position:absolute;
+    bottom:0px;
+}
+
+.stat_ship_gun{
+    position:absolute;
+    bottom:0px;
+    width:50px;
+    height:50px;
+    background-color:gray;
+    color:white;
+}
+
+.gun1{
+    left:200px;
+}
+.gun2{
+    left:250px;
+}
+.gun3{
+    left:300px;
+}
+.gun4{
+    left:350px;
+}

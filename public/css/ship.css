@@ -1,0 +1,77 @@
+.ship_info {
+    font-family:monospace;
+    display:none;
+    z-index: 101; 
+    background: rgb(0, 0, 0); 
+    position:absolute;
+    left:calc(50% - 400px); 
+    top:calc(50% - 300px); 
+    border: 1px solid rgb(167, 167, 167); 
+    width:800px; 
+    border-radius: 0px; 
+    height:600px;
+    color       : gray;
+}
+.ship_menu{
+    width:800px;
+    height:60px;
+}
+.ship_razdels{
+    width:800px;
+    height:500px;
+}
+
+.ship_btn {
+    cursor:default;
+    width: 130px;
+    height:30px;
+    display: inline-block;
+    text-align: center;
+    line-height:35px;
+    font-size:18px;
+    margin:0 0px 0px 0;
+    border: 1px solid #232323;
+}
+.ship_btn:hover {
+    background-color: #232323;
+}
+.ship_btn_sel {
+    background-color: #232323;
+}
+
+
+
+.ship_cargo_list{
+    width: 350px;
+    height: 400px;
+    overflow: auto;
+    display:inline-block;    
+    margin : 0 0 0 50px;
+}
+.ship_cargo_space{
+    width: 350px;
+    height: 400px;
+    overflow: auto;    
+    display:inline-block;    
+}
+
+.ship_cargo_item{
+    width: 230px;
+    height: 30px;
+    font-size: 16px;
+    line-height: 28px;
+    padding: 0 0 0 10px;
+}
+
+.ship_cargo_item:hover{
+    background-color: #1f1f1f;
+}
+
+.ship_cargo_name{
+    display:inline-block;
+    width:170px;
+}
+.ship_cargo_count{
+    display:inline-block;
+    width:50px;
+}

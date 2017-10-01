@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Генератор галактики</title>
+		<meta charset="utf-8">
+		<script src="/js/info.js"></script>
+		<script defer src="main.js"></script>
+	</head>
+	<body style="padding:0; margin:0;">
+	    <button onclick="zoom(-150000);">+</button>
+	    <button onclick="zoom(150000);">-</button>
+        seed:<input id="i_seed" type="number" value="456456460">
+	    <button onclick="generate_map();">generate</button> 
+	    <button onclick="prepare_planets_json();">подготавливаем данные для INFO.js</button> 
+	    
+        <div id="planet_info">:</div>
+	    <div style="width:1424px;height:1100px;">
+	        <div style="position:relative;float:left;">
+                <canvas id="holst" width = "1024" height="1024"></canvas>
+                <img id="sel" src="/i/sel2.png" style="position:absolute;left:0px;top:0px;transition-duration: 0.5s;">
+	        </div>
+            <div style="float:left;width:400px;">
+                <table>
+	               <tbody id="conf_table">
+	               <tr>
+	                   <td>id</td>
+	                   <td id="prop_id"></td>
+	               </tr>
+	               <tr>
+	                   <td>название планеты</td>
+	                   <td><input id="prop_name" type="text"></td>
+	               </tr>
+	               <tr>
+	                   <td>описание</td>
+	                   <td><textarea id="prop_desc" cols="30" rows="10"></textarea></td>
+	               </tr>
+	               <tr>
+	                   <td>раса</td><td><select id="prop_race"></select></td>
+	               </tr>
+	               <tr>
+	                   <td>альянс</td><td><select id="prop_owner"></select></td>
+	               </tr>
+	               <tr>
+	                   <td>промышленность</td><td><select id="prop_type"></select></td>
+	               </tr>
+                   </tbody>
+                </table>	
+                <button onclick="change_prop()">Изменить</button>
+                <div>
+                    светло синий квадрат - станция.<br>
+                    Еда,Ткани... - указываются в процентах, постоянная_цена*процент = цена - по которой будут покупатся товары   
+                </div>
+                <div>-------------------------------------------------------------------------</div>
+                <table>
+	               <tbody>
+                   <tr><td>x</td><td><input id="prop2_x" type="number"></td></tr>
+                   <tr><td>y</td><td><input id="prop2_y" type="number"></td></tr>
+                   <tr><td>type</td><td><input id="prop2_type" type="number"></td></tr>
+                   <tr><td>scale</td><td><input id="prop2_scale" type="number"></td></tr>
+                   <tr><td>angle</td><td><input id="prop2_angle" type="number"></td></tr>
+                   <tr><td>status</td><td><input id="prop2_status" type="number"></td></tr>
+                   </tbody>
+                </table>	                
+                <div>
+                    типы:  83-синяя, 84-серая, 85-красная, 86-желтая, 87-станция<br>
+                </div>
+
+                <button onclick="change_prop2()">Изменить</button>
+            </div>
+	    </div>
+
+	    <div>
+	        <div style="float:left;width:300px;height:200px;">
+    	        настройка магазина кораблей
+	            <table><tbody id="station_ships"></tbody></table>
+    	        <select id="station_ships_sel"></select>
+                <button onclick="station_add_el(null,0,0);">Добавить</button>
+            </div>
+	        <div style="float:left;width:300px;height:200px;">
+    	        настройка магазина энерго установок
+	            <table><tbody id="station_gens"></tbody></table>
+    	        <select id="station_gens_sel"></select>
+    	        <button onclick="station_add_el(null,0,1);">Добавить</button>
+	        </div>
+	        <div style="float:left;width:300px;height:200px;">
+    	        настройка магазина двигателей
+	            <table><tbody id="station_dvigs"></tbody></table>
+    	        <select id="station_dvigs_sel"></select>
+    	        <button onclick="station_add_el(null,0,2);">Добавить</button>
+	        </div>
+	        <div style="float:left;width:300px;height:200px;">
+    	        настройка магазина пушек
+	            <table><tbody id="station_guns"></tbody></table>
+    	        <select id="station_guns_sel"></select>
+    	        <button onclick="station_add_el(null,0,3);">Добавить</button>
+	        </div>
+	        <div style="float:left;width:300px;height:200px;">
+    	        настройка магазина устройств
+	            <table><tbody id="station_devices"></tbody></table>
+    	        <select id="station_devices_sel"></select>
+    	        <button onclick="station_add_el(null,0,4);">Добавить</button>
+	        </div>
+	    </div>
+        <button onclick="change_prop();">Сохранить</button>
+	</body>
+</html>
